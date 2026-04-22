@@ -60,7 +60,7 @@ app.use('/api', apiLimiter, requireApiKey, privateRoutes);
 app.use('/admin', requireAdminApiKey, adminRoutes);
 app.use('/screenshots', express.static(path.join(__dirname, 'screenshots')));
 
-// Create tables on first launch
+
 createTablesIfNotExist()
     .then(() => {
         app.listen(3000, () => {

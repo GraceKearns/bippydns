@@ -25,7 +25,7 @@ router.get('/signup', (req, res) => {
 router.get('/verify', (req, res) => {
     res.sendFile(path.join(__dirname, "front", "index.html"));
 });
-router.get('/dashboard', (req, res) => {
+router.get('/dashboard', requireSessionUser, (req, res) => {
     res.sendFile(path.join(__dirname, "front", "index.html"));
 });
 router.get('/auth/session', (req, res) => {
@@ -36,6 +36,7 @@ router.get('/get-collections', async (req, res) => {
     const result = await pool.query("select name from records");
     res.status(200).json(result.rows);
 });
+
 router.get("/screenshot/:name", async (req, res) => {
     const { name } = req.params;
     const files = fs.readdirSync('./src/screenshots');
@@ -127,19 +128,16 @@ router.post('/activate-account', async (req, res) => {
     if (!token) {
         return res.status(400).json({ error: 'Missing activation token.' });
     }
-
     const userResult = await pool.query(
         `SELECT id, is_verified, verify_token_expires
          FROM users
          WHERE verify_token = $1`,
         [token]
     );
-
     const user = userResult.rows[0];
     if (!user) {
         return res.status(400).json({ error: 'Invalid activation token.' });
     }
-
     if (user.is_verified) {
         return res.status(200).json({
             message: 'Account already activated.',
@@ -167,17 +165,79 @@ router.post('/activate-account', async (req, res) => {
 });
 module.exports = router;
 
-// Sign out route
 router.post('/sign-out', (req, res) => {
     if (req.session) {
         req.session.destroy(err => {
             if (err) {
                 return res.status(500).json({ error: 'Could not sign out' });
             }
-            res.clearCookie('connect.sid'); 
+            res.clearCookie('connect.sid');
             return res.status(200).json({ message: 'Signed out' });
         });
     } else {
         res.status(200).json({ message: 'Signed out' });
     }
+});
+
+router.post('/add-user-record', requireSessionUser, async (req, res) => {
+    const client = await pool.connect();
+
+    try {
+        const ip = req.ip;
+        const userId = req.session?.userId;
+        let { name } = req.body;
+
+        if (!name) {
+            return res.status(400).json({ error: 'missing required fields: name' });
+        }
+
+        name = name + '.bippydns.com';
+
+        await client.query("BEGIN");
+
+        // 1. Insert record
+        const recordRes = await client.query(
+            `INSERT INTO records (domain_id, name, type, content, ttl, disabled, auth)
+             VALUES ($1, $2, $3, $4, $5, $6, $7)
+             RETURNING id`,
+            [2, name, 'A', ip, 60, false, true]
+        );
+
+        const recordId = recordRes.rows[0].id;
+
+        // 2. Link to user
+        await client.query(
+            `INSERT INTO userdomains (user_id, record_id)
+             VALUES ($1, $2)`,
+            [userId, recordId]
+        );
+
+        await client.query("COMMIT");
+
+        res.status(200).json({ message: "successfully added row" });
+
+    } catch (err) {
+        await client.query("ROLLBACK"); 
+        console.error(err);
+        res.status(500).json({ error: 'Failed to add record' });
+
+    } finally {
+        client.release();
+    }
+});
+
+
+router.get('/view-user-records', requireSessionUser, (req, res) => {
+    const userId = req.session?.userId;
+    if (!userId) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+    pool.query(`select us.name from userdomains ud join records us on ud.record_id = us.id where ud.user_id = $1`, [userId])
+        .then(result => {
+            res.status(200).json({ records: result.rows });
+        })
+        .catch(err => {
+            console.error(err);
+            res.status(500).json({ error: 'Failed to fetch records' });
+        });
 });

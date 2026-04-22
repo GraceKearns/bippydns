@@ -53,7 +53,6 @@ export async function resendActivation(email) {
 export async function signOut() {
     const response = await fetch('/sign-out', { method: 'POST' });
     const data = await response.json().catch(()=>({}));
-    console.log(data)
     if (!response.ok) throw new Error(data.error || 'Sign out failed');
     return data;
 }
@@ -80,6 +79,29 @@ export async function fetchSessionStatus() {
         throw new Error(data.error || 'Could not get session status');
     }
     return data;
+}
+
+export async function fetchUserCollections() {
+    const response = await fetch('/view-user-records');
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+        throw new Error(data.error || 'Could not get session status');
+    }
+    return data.records || [];
+}
+
+export async function postNewUserCollection(domain) {
+    const response = await fetch('/add-user-record',{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name: domain })
+    });
+    if (!response.ok) {
+        throw new Error(response.error || 'Could not add record');
+    }
+    return response.ok;
 }
 
 export async function fetchImage(name) {

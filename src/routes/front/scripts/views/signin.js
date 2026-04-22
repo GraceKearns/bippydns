@@ -52,7 +52,6 @@ export const SignIn = {
                         errorBox.textContent = err.message || 'Sign in unsuccessful.';
                     }
                 }
-
             }
         }
 

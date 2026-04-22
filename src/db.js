@@ -14,7 +14,13 @@ async function createTablesIfNotExist() {
             is_verified BOOLEAN DEFAULT false,
             verify_token TEXT,
             verify_token_expires TIMESTAMP
-        )
+        );
+        CREATE TABLE IF NOT EXISTS UserDomains (
+            user_domain_id SERIAL PRIMARY KEY,
+            user_id INTEGER REFERENCES Users(id),
+            record_id INTEGER REFERENCES records(id) ON DELETE CASCADE,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
     `);
 
     

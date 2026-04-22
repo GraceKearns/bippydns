@@ -13,14 +13,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 50%;
 }
 .dashboardHeader {
-    width: 100%;
     display: flex;
     align-items: center;
     position: relative;
     min-height: 3em;
-  
 }
 .dashboardTitle {
     font-family: "Hina Mincho", serif;
@@ -28,15 +27,39 @@
     font-size: 2rem;
     margin-bottom: 3rem;
     padding: 0;
-    width: 100%;
     color: #e255a3;
 }
 .dashboardBody {
-    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+.recordsTitle {
+    font-family: "Hina Mincho", serif;
+    font-size: 1.5rem;
+    color: #e255a3;
+    margin-bottom: 1rem;
+    text-align: center ;
+}
+.recordsTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    table-layout: fixed
+}
+.recordsTable th, .recordsTable td {
+    border: 1px solid #e255a3;
+    font-family: "Hina Mincho", serif;
+    padding: 0.8rem;
+    text-align: left;
+    
+}
+.domainCell {
+    font-weight: 600;
+    color: #e255a3;
+    overflow:hidden;
+    text-overflow: ellipsis;
 }
 
 
