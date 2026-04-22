@@ -1,0 +1,48 @@
+.homeButton {
+    position: relative;
+    font-family: "Hina Mincho", serif;
+    border: 2.5px solid #e255a3;
+    border-radius: 1.5em 0.7em 2em 1em/1.2em 2em 1em 2em;
+    padding: 20px;
+    width: 40vw;
+    max-height: 20vh;
+    aspect-ratio: 1;
+    cursor: pointer;
+    background: white;
+    overflow: hidden;
+    box-shadow: 2px 4px 0px 0px #e255a3, 0px 0px 0px 2px #fff inset;
+    transition: filter 0.1s, box-shadow 0.1s;
+    filter: grayscale(0.1) contrast(1.1);
+    text-shadow: 1rem 1rem 0 #0002;
+    font-size: 4rem;
+  
+}
+.homeButtonAnimation {
+    animation: sketchyWobble 1.2s infinite alternate cubic-bezier(.7,-0.5,.3,1.5);
+}
+.homeButton:hover {
+    box-shadow: 8px 16px 0px 0px #e255a3, 0px 0px 0px 2px #fff inset;
+}
+
+.homeButtonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page-home {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+
+
+.homeButtonContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}

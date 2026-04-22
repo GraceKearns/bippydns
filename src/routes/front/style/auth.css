@@ -1,0 +1,146 @@
+/* Auth screens theme-matching styles */
+ .page-auth {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+ }
+.authContainerCardContainer {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin-top: 5rem;
+    
+}
+.authContainerCard {
+    padding: 1em;
+    background: #f7e2ed;
+    align-items: center;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: auto; 
+    width: 50vw;
+    max-width: 600px; 
+    border-radius: 1rem;
+    border: #e255a3 solid 0.25rem;
+    animation: sketchyWobble 1.2s infinite alternate cubic-bezier(.7, -0.5, .3, 1.5);
+}
+
+.authTitleContainer {
+    background-color: #f7e2ed;
+    padding: 0.5em 1.5em;
+    border-radius: 1rem;
+}
+.authError {
+    color: #e255a3; 
+    font-weight: bold; 
+    min-height: 1.5em; 
+    margin-bottom: 0.5em;
+}
+
+.authTitle {
+    font-family: "Hina Mincho", serif;
+    font-size: 2.5rem;
+    color: #e255a3;
+    margin-bottom: 1.5em;
+    text-align: center;
+}
+
+.auth-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2em;
+}
+
+.auth-label {
+    font-family: "Hina Mincho", serif;
+    font-size: 1.1rem;
+    color: #e255a3;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+}
+
+.auth-input {
+    padding: 0.7em 1em;
+    border-radius: 8px;
+    border: 2px solid #e255a3;
+    font-size: 1.1rem;
+    font-family: inherit;
+    background: #fff;
+    margin-top: 0.2em;
+    transition: box-shadow 0.2s;
+}
+
+.auth-input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #e255a3;
+}
+
+.auth-btn {
+    background: #e255a3;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8em 1.2em;
+    font-size: 1.2rem;
+    border-radius: 2em;
+    font-family: "Hina Mincho", serif;
+    font-weight: 600;
+    margin-top: 1em;
+    cursor: pointer;
+    box-shadow: 2px 4px 0px 0px #e255a3;
+    transition: box-shadow 0.2s, background 0.2s;
+}
+
+.auth-btn:hover {
+    background: #fd85c7;
+    color: #fff;
+    box-shadow: 4px 8px 0px 0px #e255a3;
+}
+
+.auth-switch {
+    margin-top: 2em;
+    text-align: center;
+    color: #e255a3;
+    font-family: "Hina Mincho", serif;
+    padding: 0.8em 1.2em;
+    background-color: #e255a3;
+    color: #fff;
+    border-radius: 2em;
+}
+
+.auth-link {
+    color: #300e21;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-left: 0.5em;
+}
+
+@keyframes sketchyWobble {
+    0% {
+        transform: rotate(-1deg) scale(1.01, 0.99) skew(-1deg, 1deg);
+    }
+
+    20% {
+        transform: rotate(3deg) scale(0.99, 1.01) skew(3deg, -1deg);
+    }
+
+    40% {
+        transform: rotate(-2deg) scale(1.02, 0.98) skew(-2deg, 2deg);
+    }
+
+    60% {
+        transform: rotate(3deg) scale(0.98, 1.02) skew(5deg, -2deg);
+    }
+
+    80% {
+        transform: rotate(-3deg) scale(1.01, 0.99) skew(-1deg, 1deg);
+    }
+
+    100% {
+        transform: rotate(1deg) scale(1, 1) skew(2deg, 0deg);
+    }
+}

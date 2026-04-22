@@ -1,0 +1,29 @@
+{
+  "name": "bippydns",
+  "version": "1.0.0",
+  "description": "dns for apps made by me :)",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "test",
+    "start": "nodemon ./src/index.js"
+  },
+  "keywords": [
+    "bippydns"
+  ],
+  "author": "grace",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "ejs": "^5.0.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.1.0",
+    "express-session": "^1.19.0",
+    "nodemailer": "^8.0.5",
+    "nodemon": "^3.1.14",
+    "pg": "^8.20.0",
+    "puppeteer": "^24.41.0"
+  }
+}

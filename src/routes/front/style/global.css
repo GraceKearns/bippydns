@@ -1,0 +1,177 @@
+/* Flash animation for button click */
+.flash {
+    animation: flashOpacity 0.4s linear 0s 2;
+}
+
+button.flash {
+    animation: flashOpacity 0.4s linear 0s 2;
+}
+
+.fadeOut {
+    animation: fadeOut 0.4s linear 0s forwards;
+
+}
+
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    background-color:3e255a3 ;
+}
+h1,
+p {
+    margin: 0;
+}
+body::before {
+    content: "";
+    position: fixed;
+    z-index: -1;
+    top: -100vw; left: -100vw; right: -100vw; bottom: -100vw;
+    pointer-events: none;
+    opacity: 0.18;
+    background-image: url('data:image/svg+xml;utf8,<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 44s-1.7-1.6-4.2-3.7C13.2 34.7 4 27.2 4 18.5 4 11.6 9.6 6 16.5 6c3.2 0 6.2 1.4 8.1 3.7C26.3 7.4 29.3 6 32.5 6 39.4 6 45 11.6 45 18.5c0 8.7-9.2 16.2-15.8 21.8C25.7 42.4 24 44 24 44z" fill="%23e255a3" stroke="%23222" stroke-width="2"/></svg>');
+    background-size: 18px 18px;
+    transform: rotate(-45deg);
+    animation: heartsMove 6s linear infinite;
+}
+
+body {
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 900px) {
+    article > button {
+        width: 60vw;
+        max-height: 30vw;
+        font-size: 1.2em;
+    }
+    article > button  {
+        font-size: 2.2rem;
+        text-shadow: 0.5rem 0.5rem 0 #0002;
+    }
+    main section {
+        flex-direction: column;
+        gap: 2rem;
+    }
+    h1 {
+        text-align: center;
+    }
+}
+
+@media (max-width: 600px) {
+    article > button {
+        width: 90vw;
+        max-height: 40vw;
+        font-size: 1em;
+        padding: 10px;
+    }
+    article > button  {
+        font-size: 1.2rem;
+        text-shadow: 0.2rem 0.2rem 0 #0002;
+    }
+    h1 {
+        
+        font-size: 2em;
+    }
+    main section {
+        gap: 1rem;
+    }
+}
+
+
+
+@keyframes flashOpacity {
+    0% { opacity: 1; }
+    25% { opacity: 0; }
+    50% { opacity: 1; }
+    75% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from {opacity: 1;}
+    to {opacity: 0;}
+}
+
+@keyframes sketchyWobble {
+    0% { transform: rotate(-1deg) scale(1.01, 0.99) skew(-1deg, 1deg); }
+    20% { transform: rotate(1deg) scale(0.99, 1.01) skew(1deg, -1deg); }
+    40% { transform: rotate(-2deg) scale(1.02, 0.98) skew(-2deg, 2deg); }
+    60% { transform: rotate(2deg) scale(0.98, 1.02) skew(2deg, -2deg); }
+    80% { transform: rotate(-1deg) scale(1.01, 0.99) skew(-1deg, 1deg); }
+    100% { transform: rotate(1deg) scale(1, 1) skew(0deg, 0deg); }
+}
+
+@keyframes sketchyText {
+    0% { transform: rotate(-2deg) skew(-2deg, 1deg); }
+    50% { transform: rotate(2deg) skew(2deg, -1deg); }
+    100% { transform: rotate(-2deg) skew(-2deg, 1deg); }
+}
+
+@keyframes sketchyBorder {
+    0% { border-radius: 1.2em 0.5em 1.5em 0.8em/1em 1.5em 0.8em 1.2em; }
+    50% { border-radius: 1.5em 1em 1.2em 1.5em/1.2em 1em 1.5em 1em; }
+    100% { border-radius: 1.2em 0.5em 1.5em 0.8em/1em 1.5em 0.8em 1.2em; }
+}
+
+
+@keyframes heartsMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 340px 680px; }
+}
+
+
+@keyframes rotateBorder {
+    0% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(360deg);
+    }
+    0% {
+        transform: rotate(0deg);
+    }
+}
+
+
+.hina-mincho-regular {
+    font-family: "Hina Mincho", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.hina-mincho-regular-light {
+    font-family: "Hina Mincho light", serif;
+    font-weight: 300;
+    font-style: normal;
+}

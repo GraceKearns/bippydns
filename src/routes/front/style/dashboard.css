@@ -1,0 +1,94 @@
+.dashboardPage {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.dashboardSection {
+    margin: 6vh auto;
+    padding: 2rem;
+    background: #f7e2ed;
+    border-radius: 18px;
+    border: 2.5px solid #e255a3;
+    box-shadow: 2px 4px 0px 0px #e255a3, 0px 0px 0px 2px #fff inset;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.dashboardHeader {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+    min-height: 3em;
+  
+}
+.dashboardTitle {
+    font-family: "Hina Mincho", serif;
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 3rem;
+    padding: 0;
+    width: 100%;
+    color: #e255a3;
+}
+.dashboardBody {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.dashboardBody p {
+    font-family: "Hina Mincho", serif;
+    font-size: 1.2rem;
+    color: #555;
+    margin-top: 0;
+    text-align: center;
+}
+.dashboardTitle {
+    font-family: "Hina Mincho", serif;
+    text-align: center;
+    min-width: 100%;
+}
+.dashboardLabel {
+    font-family: "Hina Mincho", serif;
+    font-size: 1.1rem;
+    color: #e255a3;
+}
+.dashboardInput {
+    padding: 0.7em 1em;
+    border-radius: 8px;
+    border: 2px solid #e255a3;
+    font-size: 1.1rem;
+    font-family: inherit;
+    background: #fff;
+    margin-top: 0.2em;
+    transition: box-shadow 0.2s;
+}
+.dashboardButton {
+    background: #e255a3;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8em 1.2em;
+    font-size: 1.2rem;
+    border-radius: 2em;
+    font-family: "Hina Mincho", serif;
+    font-weight: 600;
+    margin-top: 1em;
+    cursor: pointer;
+    box-shadow: 2px 4px 0px 0px #e255a3;
+    transition: box-shadow 0.2s, background 0.2s;
+}
+
+.dashboardButton:hover {
+    background: #fd85c7;
+    color: #fff;
+    box-shadow: 4px 8px 0px 0px #e255a3;
+}
+
+
+
