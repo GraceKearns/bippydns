@@ -1,13 +1,54 @@
+/*
+---------------
+GET
+---------------
+*/
 
-
+const API_BASE = '/api';
+const PUBLIC_BASE = '/public';
 export async function fetchCollections() {
-    const response = await fetch('/get-collections');
+    const response = await fetch(`${PUBLIC_BASE}/get-collections`);
     if (!response.ok) throw new Error('Network response was not ok');
     return response.json();
 }
 
-export async function signUp(email,password) {  
-    const response = await fetch(`/post-sign-up`, {
+export async function fetchSessionStatus() {
+    const response = await fetch(`${PUBLIC_BASE}/session`, {
+        credentials: 'include'
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+        throw new Error(data.error || 'Could not get session status');
+    }
+    return data;
+}
+
+export async function fetchUserCollections() {
+    const response = await fetch(`${API_BASE}/view-user-records`, {
+        credentials: 'include'
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+        throw new Error(data.error || 'Could not get session status');
+    }
+    return data.records || [];
+}
+
+export async function fetchImage(name) {
+    const response = (await fetch(`${PUBLIC_BASE}/screenshot/${name}`));
+    if (!response.ok) throw new Error('Network response was not ok');
+    const result = await response.json()
+    return result.image;
+}
+
+/*
+---------------
+POST
+---------------
+*/
+
+export async function signUp(email, password) {
+    const response = await fetch(`${PUBLIC_BASE}/post-sign-up`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -21,16 +62,16 @@ export async function signUp(email,password) {
     return response.ok;
 }
 
-export async function signIn(email,password) {  
-    const response = await fetch(`/post-sign-in`, {
+export async function signIn(email, password) {
+    const response = await fetch(`${PUBLIC_BASE}/post-sign-in`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ email, password })
     });
-    const data = await response.json().catch(()=>({}));
-    
+    console.log("sign in finished" )
+    const data = await response.json().catch(() => ({}));
     if (!response.ok) {
         const err = new Error(data.message || 'Network response was not ok');
         err.unverified = data.unverified === true;
@@ -40,26 +81,31 @@ export async function signIn(email,password) {
 }
 
 export async function resendActivation(email) {
-    const response = await fetch('/resend-activation', {
+    const response = await fetch(`${PUBLIC_BASE}/resend-activation`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
     });
-    const data = await response.json().catch(()=>({}));
+    const data = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(data.error || 'Could not resend activation');
     return data;
 }
 
 export async function signOut() {
-    const response = await fetch('/sign-out', { method: 'POST' });
-    const data = await response.json().catch(()=>({}));
+    const response = await fetch(`${API_BASE}/sign-out`,
+        {
+            method: 'POST',
+            credentials: 'include'
+        }                
+    );
+    const data = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(data.error || 'Sign out failed');
     return data;
 }
 
 export async function activateAccount(token) {
-    const response = await fetch('/activate-account', {
-        method: 'POST',
+    const response = await fetch(`${PUBLIC_BASE}/activate-account`, {
+        method: 'POST', 
         headers: {
             'Content-Type': 'application/json'
         },
@@ -72,42 +118,41 @@ export async function activateAccount(token) {
     return data;
 }
 
-export async function fetchSessionStatus() {
-    const response = await fetch('/auth/session');
+
+export async function deleteRecord(userId, recordId) {
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${API_BASE}/delete-user-record`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+           
+        },
+        body: JSON.stringify({ userId, recordId })
+    });
     const data = await response.json().catch(() => ({}));
     if (!response.ok) {
-        throw new Error(data.error || 'Could not get session status');
+        throw new Error(data.error || 'Failed to delete record');
     }
     return data;
 }
 
-export async function fetchUserCollections() {
-    const response = await fetch('/view-user-records');
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok) {
-        throw new Error(data.error || 'Could not get session status');
-    }
-    return data.records || [];
-}
-
 export async function postNewUserCollection(domain) {
-    const response = await fetch('/add-user-record',{
+    const token = localStorage.getItem("token");
+    const response = await fetch(`${API_BASE}/add-user-record`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify({ name: domain })
     });
+    console.log(response)
     if (!response.ok) {
-        throw new Error(response.error || 'Could not add record');
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.error || 'Could not add record');
     }
     return response.ok;
 }
 
-export async function fetchImage(name) {
-    const response = (await fetch(`/screenshot/${name}`));
-    if (!response.ok) throw new Error('Network response was not ok');
-    const result = await response.json()
-    return result.image;
-}
 

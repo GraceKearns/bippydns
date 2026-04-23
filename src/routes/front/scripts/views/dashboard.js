@@ -1,7 +1,7 @@
 
 import { loadCSS } from "../util/loadCSS.js";
 import '../components/Nav/Nav.js';
-import { fetchUserCollections, postNewUserCollection } from "../api.js";
+import { fetchUserCollections, postNewUserCollection, deleteRecord } from "../api.js";
 export const Dashboard = {
     async init() {
         loadCSS("/style/dashboard.css", "dashboard-css");
@@ -17,9 +17,10 @@ export const Dashboard = {
                     await this.fetchData();
                 }
                 catch (error) {
-                    console.log(error)
-                    const list = document.querySelector('.recordsList');
-                    if (list) list.innerHTML = `<div class="error">Failed to add domain.</div>`;
+                    const errorBox = document.getElementById('dashboarderror');
+                    if (errorBox) {
+                        this.showDashboardError(errorBox, error.message || 'Failed to add domain.');
+                    }
                 }
             }
         }
@@ -45,7 +46,7 @@ export const Dashboard = {
                         <div> 
                         <label class="dashboardLabel">
                             Domain Name
-                            <input class="dashboardInput" type="text" name="domain" placeholder="example.com" required />
+                            <input class="dashboardInput" type="text" pattern="^[a-zA-Z0-9\\-]+$"  maxLength="255" minlength="1" name="domain" placeholder="example.com" required />
                         </label>
                         <span class="dashboardLabel"> .bippydns.com </span>
                         <button class="dashboardButton" type="submit">Add Domain</button>
@@ -53,6 +54,10 @@ export const Dashboard = {
                     </form>
                     <div class="dashboardRecords">
                         <h3 class="recordsTitle">Your Domains</h3>
+                        <div class="dashboardError" id="dashboarderror"></div>
+                        <div class="domainCount">
+                            <span id="domainCountNumber">0/5 </span> 
+                        </div>
                         <table class="recordsTable">
                             <thead>
                                 <tr>
@@ -87,7 +92,7 @@ export const Dashboard = {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td class="domainCell">${item.name}</td>
-                    <td class="ipCell">${item.current_ip || ''}</td>
+                    <td class="ipCell">${item.ipv4 || ''}</td>
                     <td class="ipv6Cell">${item.ipv6 || ''}</td>
                     <td>${item.updated || ''}</td>
                     <td class="actions">
@@ -98,9 +103,24 @@ export const Dashboard = {
                 tr.querySelector('.editButton').addEventListener('click', () => {
                     this.enterEditMode(tr, item);
                 });
+                tr.querySelector('.deleteButton').addEventListener('click', () => {
+                    deleteRecord(item.user_id, item.record_id).then(() => {
+                        this.fetchData();
+                    }).catch(err => {
+                        const errorDiv = document.getElementById('dashboarderror');
+                        if (errorDiv) {
+                            this.showDashboardError(errorDiv, err.message || 'Failed to delete domain.');
+                        }
+                    });
+
+                });
 
                 list.appendChild(tr);
             });
+        }
+        const countEl = document.getElementById('domainCountNumber');
+        if (countEl) {
+            countEl.textContent = `${data.length}/5`;
         }
     },
     enterEditMode(tr, item) {
@@ -111,16 +131,18 @@ export const Dashboard = {
         ipCell.innerHTML = `
             <input 
                 type="text" 
-                class="ip-input" 
+                class="ipInput" 
                 placeholder="${item.current_ip || ''}"
+                pattern="^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$"
                 value="${item.current_ip || ''}"
             />
         `;
         ipv6Cell.innerHTML = `
             <input 
                 type="text" 
-                class="ipv6-input" 
+                class="ipv6Input" 
                 placeholder="${item.ipv6 || ''}"
+                pattern="^([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}$"
                 value="${item.ipv6 || ''}"
             />
         `;
@@ -128,8 +150,8 @@ export const Dashboard = {
             <button class="saveButton">Save</button>
         `;
         actions.querySelector('.saveButton').addEventListener('click', async () => {
-            const newIp = tr.querySelector('.ip-input').value;
-            const newIpv6 = tr.querySelector('.ipv6-input').value;
+            const newIp = tr.querySelector('.ipInput').value;
+            const newIpv6 = tr.querySelector('.ipv6Input').value;
             await this.saveEdit(item, newIp, newIpv6);
             this.fetchData();
         });
@@ -148,6 +170,14 @@ export const Dashboard = {
         } catch (err) {
             console.error('Failed to update', err);
         }
+    },
+
+    showDashboardError(element, message) {
+        element.classList.remove('dashboardAnimateError');
+        void element.offsetWidth;
+        element.textContent = message;
+        element.classList.add('dashboardAnimateError');
     }
+
 
 };

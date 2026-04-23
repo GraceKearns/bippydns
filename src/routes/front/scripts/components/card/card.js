@@ -13,7 +13,7 @@ export default function Card({ name }) {
                 box-shadow: 2px 4px 0px 0px #e255a3, 0px 0px 0px 2px #fff inset;
                 font-family: sans-serif;
                 width: 100%;
-                min-width: 180px;
+                min-width: 380px;
                 max-width: 380px;
                 aspect-ratio: 1 / 1;
                 box-sizing: border-box;

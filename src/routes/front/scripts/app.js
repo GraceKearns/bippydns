@@ -7,7 +7,6 @@ import { navStore } from "./stores/navStore.js";
 function redirectIfAuthenticated(nextPath) {
     return (done) => {
         const state = authStore.state;
-
         if (!state.loaded) {
             // wait until auth is loaded
             const unsubscribe = authStore.subscribe((s) => {
@@ -48,21 +47,7 @@ window.addEventListener("popstate", () => {
     router(window.location.pathname);
 });
 
-document.addEventListener("click", (e) => {
-    const target = e.target;
-    console.log(target)
-    if (target.matches("[data-link]")) {
-        e.preventDefault();
-        target.classList.remove("flash");
-        target.classList.remove("homeButtonAnimation");
-        void target.offsetWidth;
-        target.classList.add("flash");
-        setTimeout(() => {
-            target.classList.remove("flash");
-            navigate(target.dataset.link);
-        }, 1000); 
-    }
-});
+
 
 async function initApp() {
     try {

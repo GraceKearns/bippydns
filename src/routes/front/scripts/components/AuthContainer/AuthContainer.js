@@ -1,6 +1,7 @@
 import { authStore } from "../../stores/authStore.js";
 import { navStore } from "../../stores/navStore.js";
 import { navigate } from "../../app.js";
+import {signOut} from "../../api.js"; 
 const cssUrl = new URL("./AuthContainer.css", import.meta.url).href;
 class AuthContainer extends HTMLElement {
     constructor() {
@@ -25,7 +26,6 @@ class AuthContainer extends HTMLElement {
 
     this.shadowRoot.addEventListener("click", (e) => {
         const target = e.target;
-
         if (target.matches("[data-link]")) {
             e.preventDefault();
             navigate(target.dataset.link);
@@ -49,9 +49,7 @@ class AuthContainer extends HTMLElement {
         this.unsubNav?.();
     }
 
-    goBack() {
-        history.back();
-    }
+   
     render() {
         this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="${cssUrl}">
@@ -60,12 +58,12 @@ class AuthContainer extends HTMLElement {
                 ${this.authenticated
                 ? `
                 <div class="authenticated"> 
-                    <button id="signout-btn">Sign out</button>
+                    <button id="signout-btn" >Sign out</button>
                 </div>
                 `
                 : `<div class="authenticated"> 
-                    <button data-link="/signin" id="signin-btn">Sign in</button>
-                    <button data-link="/signup" id="signup-btn">Sign up</button>
+                    <button  id="signin-btn">Sign in</button>
+                    <button  id="signup-btn">Sign up</button>
                 </div>`
             }
             </div>
@@ -74,10 +72,6 @@ class AuthContainer extends HTMLElement {
     }
 
     attachEvents() {
-        this.shadowRoot
-            .querySelector(".back")
-            ?.addEventListener("click", () => this.goBack());
-
         if (this.authenticated) {
             this.shadowRoot
                 .getElementById("signout-btn")
@@ -91,14 +85,21 @@ class AuthContainer extends HTMLElement {
                 ?.addEventListener("click", () => this.signUp());
         }
     }
-
-    signIn() {
-
-    }
-
     signOut() {
-
+        signOut().then(() => {
+            authStore.set({ authenticated: false, user: null });
+            navigate(location.pathname);
+        }).catch(err => {
+            console.error("Sign out failed:", err);
+        } );
     }
+    signIn() {
+       navigate("/signin");
+    }
+    signUp() {
+       navigate("/signup");
+    }
+
 }
 
 customElements.define("auth-container", AuthContainer);

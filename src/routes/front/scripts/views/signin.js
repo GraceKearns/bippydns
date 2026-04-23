@@ -44,7 +44,12 @@ export const SignIn = {
                 if (errorBox) errorBox.textContent = '';
                 try {
                     const data = await signIn(email, password);
-                    window.location.href = nextPath;
+
+                    if (data.unverified) {
+                        if (errorBox) errorBox.textContent = 'Account not activated. Please check your email for the activation link.';
+                    } else {
+                        window.location.href = nextPath;
+                    }
                 }
                 catch (err) {
                     console.log(err)

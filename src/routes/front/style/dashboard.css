@@ -14,6 +14,9 @@
     flex-direction: column;
     align-items: center;
     width: 50%;
+    max-width: 900px;
+    min-width: 320px;
+    box-sizing: border-box;
 }
 .dashboardHeader {
     display: flex;
@@ -28,6 +31,28 @@
     margin-bottom: 3rem;
     padding: 0;
     color: #e255a3;
+}
+.dashboardError {
+    color: #e255a3; 
+    font-weight: bold; 
+    min-height: 1.5em; 
+    text-align: center;
+    margin-bottom: 0.5em;
+}
+.dashboardAnimateError {
+    animation: errorgrow 1s ease forwards;
+}
+
+
+#domainCountNumber {
+    padding: 0.5em 1em;
+    border-radius: 8px;
+    background-color: #e255a3;
+    font-family: "Hina Mincho", serif;
+    font-size: 1.2rem;
+    color: #fff;
+    margin-top: 0;
+    margin-bottom: 1rem;
 }
 .dashboardBody {
     display: flex;
@@ -46,14 +71,102 @@
     width: 100%;
     border-collapse: collapse;
     margin-top: 1rem;
-    table-layout: fixed
+    table-layout: fixed;
+    word-break: break-word;
 }
 .recordsTable th, .recordsTable td {
     border: 1px solid #e255a3;
     font-family: "Hina Mincho", serif;
     padding: 0.8rem;
     text-align: left;
-    
+    font-size: 1.5rem;
+    color:#e255a3;
+    box-sizing: border-box;
+}
+/* Responsive Design */
+@media (max-width: 1199px) {
+    .dashboardSection {
+        width: 80%;
+        padding: 1.5rem;
+    }
+    .dashboardTitle {
+        font-size: 1.7rem;
+    }
+    .recordsTable th, .recordsTable td {
+        font-size: 1.1rem;
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 800px) {
+    .dashboardSection {
+        width: 98%;
+        padding: 1rem;
+        margin: 2vh auto;
+    }
+    .dashboardTitle {
+        font-size: 1.3rem;
+        margin-bottom: 1.5rem;
+    }
+    .recordsTable th, .recordsTable td {
+        font-size: 1rem;
+        padding: 0.4rem;
+    }
+    .dashboardLabel {
+        font-size: 1.1rem;
+    }
+    .dashboardButton, .editButton, .deleteButton, .saveButton {
+        font-size: 0.95rem;
+        padding: 0.5em 0.7em;
+    }
+}
+
+@media (max-width: 600px) {
+    .dashboardSection {
+        width: 100%;
+        min-width: unset;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 0.5rem;
+        margin: 0;
+    }
+    .dashboardHeader {
+        min-height: 2em;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .dashboardTitle {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        padding: 0.2em 0;
+    }
+    .recordsTable {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        font-size: 0.95rem;
+    }
+    .recordsTable thead, .recordsTable tbody, .recordsTable tr {
+        display: table;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .recordsTable th, .recordsTable td {
+        font-size: 0.95rem;
+        padding: 0.3rem;
+        word-break: break-word;
+    }
+    .dashboardLabel {
+        font-size: 1rem;
+    }
+    .dashboardButton, .editButton, .deleteButton, .saveButton {
+        font-size: 0.9rem;
+        padding: 0.4em 0.6em;
+    }
+    #domainCountNumber {
+        font-size: 1rem;
+        padding: 0.3em 0.7em;
+    }
 }
 .domainCell {
     font-weight: 600;
@@ -61,6 +174,19 @@
     overflow:hidden;
     text-overflow: ellipsis;
 }
+.editButton, .deleteButton , .saveButton {
+    background: #e255a3;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5em 1em;
+    font-size: 1rem;
+    font-family: "Hina Mincho", serif;
+    cursor: pointer;
+    box-shadow: 2px 4px 0px 0px #e255a3;
+    transition: box-shadow 0.2s, background 0.2s;
+}
+
 
 
 
@@ -78,10 +204,12 @@
 }
 .dashboardLabel {
     font-family: "Hina Mincho", serif;
-    font-size: 1.1rem;
+    font-size: 1.5rem;
     color: #e255a3;
 }
-.dashboardInput {
+
+
+.dashboardInput, .ipv6Input, .ipInput {
     padding: 0.7em 1em;
     border-radius: 8px;
     border: 2px solid #e255a3;
@@ -90,7 +218,29 @@
     background: #fff;
     margin-top: 0.2em;
     transition: box-shadow 0.2s;
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+    min-width: 0;
+    display: block;
 }
+
+@media (max-width: 800px) {
+  .dashboardInput, .ipv6Input, .ipInput {
+    max-width: 100%;
+    font-size: 1rem;
+    padding: 0.6em 0.8em;
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboardInput, .ipv6Input, .ipInput {
+    max-width: 100%;
+    font-size: 0.95rem;
+    padding: 0.5em 0.6em;
+  }
+}
+
 .dashboardButton {
     background: #e255a3;
     color: #fff;
@@ -113,5 +263,32 @@
     box-shadow: 4px 8px 0px 0px #e255a3;
 }
 
+@keyframes errorgrow {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1) translateX(0);
+    }
+
+    /* shake phase */
+    10% { transform: translateX(-4px); }
+    20% { transform: translateX(4px); }
+    30% { transform: translateX(-4px); }
+    40% { transform: translateX(4px); }
+    50% { transform: translateX(-2px); }
+    60% { transform: translateX(2px); }
 
 
+    70% {
+        transform: translateX(0) scale(1);
+    }
+
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-10px) scale(1.2);
+    }
+}
