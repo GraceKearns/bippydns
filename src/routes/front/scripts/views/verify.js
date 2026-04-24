@@ -1,4 +1,4 @@
-import { activateAccount } from "../api.js";
+import { activateAccount } from "../api/Authentication.js";
 
 export function Verify() {
     setTimeout(async () => {

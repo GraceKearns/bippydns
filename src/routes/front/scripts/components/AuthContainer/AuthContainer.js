@@ -1,7 +1,7 @@
 import { authStore } from "../../stores/authStore.js";
 import { navStore } from "../../stores/navStore.js";
 import { navigate } from "../../app.js";
-import {signOut} from "../../api.js"; 
+import { signOut } from "../../api/Authentication.js";
 const cssUrl = new URL("./AuthContainer.css", import.meta.url).href;
 class AuthContainer extends HTMLElement {
     constructor() {

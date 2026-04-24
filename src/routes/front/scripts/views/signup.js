@@ -1,4 +1,5 @@
-import { signUp, fetchSessionStatus } from "../api.js";
+import { signUp } from "../api/Authentication.js";
+import { fetchSessionStatus } from "../api/Util.js";
 export const SignUp = {
     template() {
         return `

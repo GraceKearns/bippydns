@@ -1,4 +1,4 @@
-import { signIn } from "../api.js";
+import { signIn } from '../api/Authentication.js';
 import '../components/Nav/Nav.js';
 export const SignIn = {
     template() {

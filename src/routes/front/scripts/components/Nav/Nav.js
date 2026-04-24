@@ -1,6 +1,7 @@
 import "../AuthContainer/AuthContainer.js";
-const cssUrl = new URL("./Nav.css", import.meta.url).href
 import { authStore } from "../../stores/authStore.js";
+const cssUrl = new URL("./Nav.css", import.meta.url).href
+
 class Nav extends HTMLElement {
     constructor() {
         super();

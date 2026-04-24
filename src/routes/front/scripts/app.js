@@ -1,7 +1,7 @@
 // app.js
 
 import { router, useMiddleware } from "./router.js";
-import { fetchSessionStatus } from "./api.js";
+import { fetchSessionStatus } from "./api/Util.js";
 import { authStore } from "./stores/authStore.js";
 import { navStore } from "./stores/navStore.js";
 function redirectIfAuthenticated(nextPath) {

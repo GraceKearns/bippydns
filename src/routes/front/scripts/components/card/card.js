@@ -1,4 +1,4 @@
-import { fetchImage } from "../../api.js"
+import { fetchRecordImage } from "../../api/Util.js";
 
 export default function Card({ name }) {
     const card = document.createElement('div');
@@ -85,7 +85,7 @@ export default function Card({ name }) {
     const imageBox = shadow.querySelector('.card-image-box');
     setTimeout(async () => {
         try {
-            const imagePath = await fetchImage("youtube.com");
+            const imagePath = await fetchRecordImage("youtube.com");
             if (imagePath) {
                 const img = document.createElement('img');
                 img.src = imagePath;

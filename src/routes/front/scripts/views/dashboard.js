@@ -1,7 +1,7 @@
 
 import { loadCSS } from "../util/loadCSS.js";
 import '../components/Nav/Nav.js';
-import { fetchUserCollections, postNewUserCollection, deleteRecord,updateRecord } from "../api.js";
+import { getUserRecords,postNewRecord,deleteRecord,updateRecord } from "../api/DashboardRecords.js";
 export const Dashboard = {
     async init() {
         loadCSS("/style/dashboard.css", "dashboard-css");
@@ -12,7 +12,7 @@ export const Dashboard = {
                 e.preventDefault();
                 const domain = form.domain.value;
                 try {
-                    await postNewUserCollection(domain);
+                    await postNewRecord(domain);
                     form.reset();
                     await this.fetchData();
                 }
@@ -31,7 +31,6 @@ export const Dashboard = {
             const list = document.querySelector('.recordsList');
             if (list) list.innerHTML = `<div class="error">Failed to load your domains.</div>`;
         }
-
     },
     template() {
         return `
@@ -79,7 +78,7 @@ export const Dashboard = {
         `;
     },
     async fetchData() {
-        const data = await fetchUserCollections();
+        const data = await getUserRecords();
         if (data.length === 0) {
             const list = document.querySelector('.recordsList');
             if (list) list.innerHTML = `<tr><td colspan="5">No domains added yet.</td></tr>`;

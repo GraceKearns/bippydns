@@ -1,5 +1,5 @@
 import Card from '../components/card/card.js';
-import { fetchCollections } from '../api.js';
+import { fetchAllRecords } from '../api/Util.js';
 import { loadCSS } from "../util/loadCSS.js";
 import '../components/Nav/Nav.js';
 export const Home = {
@@ -18,18 +18,16 @@ export const Home = {
     async init() {
         loadCSS("/style/home.css", "home-css");
         try {
-            const data = await fetchCollections();
+            const data = await fetchAllRecords();
             const list = document.getElementById('collections-list');
             if (list) {
                 list.innerHTML = '';
                 data.forEach(item => {
                     list.appendChild(Card({ name: item.name || item }));
                 });
-
             }
         } catch (error) {
             const list = document.getElementById('collections-list');
-            console.log(error)
             if (list) list.innerHTML = `<div class="error">Failed to load collections.</div>`;
         }
     }
