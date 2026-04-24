@@ -6,10 +6,10 @@ const fs = require("fs");
 const bcrypt = require("bcrypt");
 const crypto = require('crypto');
 const transporter = require('../mailer');
-const { requireSessionUser } = require('../middleware/auth');
 const jwt = require("jsonwebtoken");
 const {auth} = require('../middleware/auth');
 const APP_BASE_URL = process.env.APP_BASE_URL || 'https://bippydns.com';
+const { getEmailTemplate } = require('../util/getEmailTemplate');
 router.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, "front", "index.html"));
 });

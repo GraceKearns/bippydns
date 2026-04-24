@@ -63,7 +63,7 @@ app.use('/admin', requireAdminApiKey, adminRoutes);
 app.use('/api', auth, protectedRoutes);
 app.use('/public', publicRoutes);
 app.use('/', pagesRoutes);
-app.use
+app.use(
 createTablesIfNotExist()
     .then(() => {
         app.listen(3000, () => {
@@ -74,3 +74,4 @@ createTablesIfNotExist()
         console.error("Failed to create tables:", err);
         process.exit(1);
     });
+)

@@ -44,7 +44,6 @@ export default function Card({ name }) {
                 font-family: "Hina Mincho light", serif;
                 text-align: center;
                 word-break: break-word;
-                
                 white-space: normal;
             }
             @keyframes sketchyWobble {
@@ -66,7 +65,6 @@ export default function Card({ name }) {
                 text-decoration: none;
                 color: inherit;
             }
-           
             .card-desc {
                 color: #555;
             }
@@ -77,7 +75,6 @@ export default function Card({ name }) {
                     <div class="card-title">${name}</div>
                 </div>
                 <div class="card-image-box">
-                
                 </div>
             </div>
         </a>

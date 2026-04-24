@@ -1,4 +1,5 @@
-import { signIn } from '../api/Authentication.js';
+import { signIn, signUp } from '../api/Authentication.js';
+import { navigate } from '../app.js';
 import '../components/Nav/Nav.js';
 export const SignIn = {
     template() {
@@ -24,7 +25,7 @@ export const SignIn = {
                     </form>
                     <div class="auth-switch">
                         <span>Don't have an account?</span>
-                        <a href="#signup" class="auth-link" data-link="/signup">Sign Up</a>
+                        <a class="auth-link">Sign Up</a>
                     </div>
                 </div>
             </div>
@@ -59,7 +60,14 @@ export const SignIn = {
                 }
             }
         }
+        document.querySelector('.auth-link').addEventListener('click', () => {
+            this.signUp();
+        });
+        
 
+    },
+    signUp() {
+        navigate("/signup");
     }
 
 }
