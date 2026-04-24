@@ -47,6 +47,25 @@
     margin-bottom: 1.5em;
     text-align: center;
 }
+#resendVerificationContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: none;
+}
+#resendVerificationLink {
+    font-family: "Hina Mincho", serif;
+    color: #e255a3;
+    font-size: 1.2rem;
+    
+}
+#resendVerificationMessage {
+    font-family: "Hina Mincho", serif;
+    color: #e255a3;
+    font-size: 1.2rem;
+    margin-top: 0.5em;
+}
 
 .auth-form {
     width: 100%;

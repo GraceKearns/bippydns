@@ -1,7 +1,9 @@
+
 import { activateAccount } from "../api/Authentication.js";
 
-export function Verify() {
-    setTimeout(async () => {
+export const Verify = {
+    async init() {
+        
         const statusBox = document.getElementById('verify-status');
         const params = new URLSearchParams(window.location.search);
         const token = params.get('token');
@@ -18,20 +20,15 @@ export function Verify() {
         } catch (err) {
             if (statusBox) statusBox.textContent = err.message || 'Activation failed.';
         }
-    }, 0);
-
-    return `
-    <section class="auth-section">
-        <h2 class="auth-title">Verifying account</h2>
-        <p id="verify-status" style="color: #e255a3; font-weight: bold;">Checking your activation link...</p>
-    </section>
+    },
+    template() {
+        return `
+        <section class="auth-section">
+            <h2 class="auth-title">Verifying account</h2>
+            <p id="verify-status" style="color: #e255a3; font-weight: bold;">Checking your activation link...</p>
+        </section>
     `;
+    }
 }
 
-if (!document.getElementById('auth-css')) {
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = 'style/auth.css';
-    link.id = 'auth-css';
-    document.head.appendChild(link);
-}
+

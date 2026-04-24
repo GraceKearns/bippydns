@@ -1,5 +1,6 @@
-import { signIn, signUp } from '../api/Authentication.js';
+import { signIn, resendActivation } from '../api/Authentication.js';
 import { navigate } from '../app.js';
+import { loadCSS } from "../util/loadCSS.js";
 import '../components/Nav/Nav.js';
 export const SignIn = {
     template() {
@@ -11,7 +12,11 @@ export const SignIn = {
                     <div class="authTitleContainer">
                         <h2 class="authTitle">Sign In</h2>
                     </div>
-                    <div class="authError" id="autherror"></div>
+                    <div class="authError" id="errorBox"></div>
+                    <div id="resendVerificationContainer">
+                        <a href="#" id="resendVerificationLink">Resend verification email</a>
+                        <span id="resendVerificationMessage"></span>
+                    </div>
                     <form class="auth-form" id="signin-form">
                         <label class="auth-label">
                             Email
@@ -33,38 +38,73 @@ export const SignIn = {
             `;
     },
     init() {
+        loadCSS("/style/auth.css", "auth-css");
         const params = new URLSearchParams(window.location.search);
         const nextPath = params.get('next') || '/dashboard';
-        const form = document.getElementById("signin-form")
-        if (form) {
-            form.onsubmit = async (e) => {
-                e.preventDefault();
-                const email = form.email.value;
-                const password = form.password.value;
-                const errorBox = document.getElementById('autherror');
-                if (errorBox) errorBox.textContent = '';
-                try {
-                    const data = await signIn(email, password);
 
-                    if (data.unverified) {
-                        if (errorBox) errorBox.textContent = 'Account not activated. Please check your email for the activation link.';
-                    } else {
-                        window.location.href = nextPath;
+        const form = document.getElementById("signin-form");
+        const errorBox = document.getElementById('errorBox');
+        const resendContainer = document.getElementById('resendVerificationContainer');
+        const resendLink = document.getElementById('resendVerificationLink');
+        const resendMsg = document.getElementById('resendVerificationMessage');
+        if (!form) return;
+        const resetUI = () => {
+            if (errorBox) errorBox.textContent = '';
+            if (resendContainer) resendContainer.style.display = 'none';
+            if (resendMsg) resendMsg.textContent = '';
+        };
+
+        const showUnverifiedUI = (email) => {
+            if (errorBox) {
+                errorBox.textContent = 'Account not activated. Please check your email for the activation link.';
+            }
+            if (resendContainer) resendContainer.style.display = 'flex';
+            if (resendLink) {
+                resendLink.onclick = async (ev) => {
+                    ev.preventDefault();
+                    resendMsg.textContent = '';
+                    resendLink.style.pointerEvents = 'none';
+                    resendLink.style.opacity = '0.6';
+                    try {
+                        await resendActivation(email);
+                        resendMsg.textContent = 'Verification email sent!';
+                    } catch {
+                        resendMsg.textContent = 'Failed to resend email.';
+                    } finally {
+                        setTimeout(() => {
+                            resendLink.style.pointerEvents = '';
+                            resendLink.style.opacity = '';
+                        }, 2000);
                     }
+                };
+            }
+        };
+
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            const email = form.email.value;
+            const password = form.password.value;
+            resetUI();
+            try {
+                const data = await signIn(email, password);
+                if (data.unverified) {
+                    showUnverifiedUI(email);
+                    return;
                 }
-                catch (err) {
-                    console.log(err)
-                    if (errorBox) {
-                        errorBox.textContent = err.message || 'Sign in unsuccessful.';
-                    }
+                window.location.href = nextPath;
+            } catch (err) {
+                if (!errorBox) return;
+                if (err.message === 'Please verify email') {
+                    showUnverifiedUI(email);
+                } else {
+                    errorBox.textContent = err.message || 'Sign in failed. Please check your credentials.';
                 }
             }
-        }
-        document.querySelector('.auth-link').addEventListener('click', () => {
+        };
+
+        document.querySelector('.auth-link')?.addEventListener('click', () => {
             this.signUp();
         });
-        
-
     },
     signUp() {
         navigate("/signup");

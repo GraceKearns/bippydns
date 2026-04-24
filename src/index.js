@@ -15,7 +15,7 @@ const { auth } = require('./middleware/auth');
 const SECRET_KEY = process.env.SECRET_KEY
 const { createTablesIfNotExist } = require('./db');
 const cookieParser = require("cookie-parser");
-const allowedOrigins = (process.env.CORS_ALLOWED_ORIGINS || 'https://bippydns.com,http://localhost:3000')
+const allowedOrigins = (process.env.CORS_ALLOWED_ORIGINS || 'https://bippydns.com, http://localhost:3000')
     .split(',')
     .map((origin) => origin.trim())
     .filter(Boolean);
@@ -46,6 +46,7 @@ app.use(cors({
     },
     credentials: true
 }));
+
 app.use(session({
     secret: SECRET_KEY,
     resave: false,
@@ -55,15 +56,14 @@ app.use(session({
         secure: false
     }
 }));
+
 app.use(['/post-sign-in', '/post-sign-up', '/activate-account'], authLimiter);
-
-
 app.use('/screenshots', express.static(path.join(__dirname, 'screenshots')));
 app.use('/admin', requireAdminApiKey, adminRoutes);
-app.use('/api', auth, protectedRoutes);
-app.use('/public', publicRoutes);
+app.use('/api', auth, apiLimiter, protectedRoutes);
+app.use('/public', apiLimiter, publicRoutes);
 app.use('/', pagesRoutes);
-app.use(
+
 createTablesIfNotExist()
     .then(() => {
         app.listen(3000, () => {
@@ -74,4 +74,3 @@ createTablesIfNotExist()
         console.error("Failed to create tables:", err);
         process.exit(1);
     });
-)

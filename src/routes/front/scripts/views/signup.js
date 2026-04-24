@@ -1,5 +1,6 @@
 import { signUp } from "../api/Authentication.js";
 import { fetchSessionStatus } from "../api/Util.js";
+import { loadCSS } from "../util/loadCSS.js";
 export const SignUp = {
     template() {
         return `
@@ -36,6 +37,7 @@ export const SignUp = {
         `;
     },
     init() {
+        loadCSS("/style/auth.css", "auth-css");
         fetchSessionStatus().then(status => {
             if (status.authenticated) {
                 window.location.href = '/dashboard';
