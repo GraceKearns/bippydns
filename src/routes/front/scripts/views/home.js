@@ -1,29 +1,37 @@
-// views/home.js
+import Card from '../components/card/card.js';
+import { fetchCollections } from '../api.js';
 import { loadCSS } from "../util/loadCSS.js";
 import '../components/Nav/Nav.js';
 export const Home = {
     template() {
         return `
-        <section class="page-home">
+        <section class="page-collections">
             <nav-bar></nav-bar>
-           
-            <section class="homeButtonContainer">
-                <article class="viewCollection">
-                    <button data-link="/collections" class="homeButton homeButtonAnimation">
-                        View Collection
-                    </button>
-                </article>
-                <article class="joinIn">
-                    <button data-link="/signup" class="homeButton homeButtonAnimation">
-                        Join
-                    </button>
-                </article>
-            </section>
+            <div class="collections-header">
+                <h1>Collections</h1>    
+                <p>Explore the available collections in Bippy DNS.</p>
+            </div>
+            <div id="collections-list">Loading...</div>
         </section>
-        `;
+    `;
     },
-
-    init() {
+    async init() {
         loadCSS("/style/home.css", "home-css");
+        try {
+            const data = await fetchCollections();
+            const list = document.getElementById('collections-list');
+            if (list) {
+                list.innerHTML = '';
+                data.forEach(item => {
+                    list.appendChild(Card({ name: item.name || item }));
+                });
+
+            }
+        } catch (error) {
+            const list = document.getElementById('collections-list');
+            console.log(error)
+            if (list) list.innerHTML = `<div class="error">Failed to load collections.</div>`;
+        }
     }
-};
+}
+

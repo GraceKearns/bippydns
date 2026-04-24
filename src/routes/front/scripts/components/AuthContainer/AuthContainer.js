@@ -88,6 +88,10 @@ class AuthContainer extends HTMLElement {
     signOut() {
         signOut().then(() => {
             authStore.set({ authenticated: false, user: null });
+            if(location.pathname == "/dashboard") {
+                navigate("/");
+                return;
+            }
             navigate(location.pathname);
         }).catch(err => {
             console.error("Sign out failed:", err);

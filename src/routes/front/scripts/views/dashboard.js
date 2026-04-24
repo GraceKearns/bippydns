@@ -1,7 +1,7 @@
 
 import { loadCSS } from "../util/loadCSS.js";
 import '../components/Nav/Nav.js';
-import { fetchUserCollections, postNewUserCollection, deleteRecord } from "../api.js";
+import { fetchUserCollections, postNewUserCollection, deleteRecord,updateRecord } from "../api.js";
 export const Dashboard = {
     async init() {
         loadCSS("/style/dashboard.css", "dashboard-css");
@@ -124,17 +124,17 @@ export const Dashboard = {
         }
     },
     enterEditMode(tr, item) {
+        const record_id = item.record_id;
         const ipCell = tr.querySelector('.ipCell');
         const ipv6Cell = tr.querySelector('.ipv6Cell');
         const actions = tr.querySelector('.actions');
-
         ipCell.innerHTML = `
             <input 
                 type="text" 
                 class="ipInput" 
-                placeholder="${item.current_ip || ''}"
+                placeholder="${item.ipv4 || ''}"
                 pattern="^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$"
-                value="${item.current_ip || ''}"
+                value="${item.ipv4 || ''}"
             />
         `;
         ipv6Cell.innerHTML = `
@@ -152,21 +152,14 @@ export const Dashboard = {
         actions.querySelector('.saveButton').addEventListener('click', async () => {
             const newIp = tr.querySelector('.ipInput').value;
             const newIpv6 = tr.querySelector('.ipv6Input').value;
-            await this.saveEdit(item, newIp, newIpv6);
+            await this.saveEdit(item, item.record_id, newIp, newIpv6);
             this.fetchData();
         });
     },
-    async saveEdit(item, newIp, newIpv6) {
+    async saveEdit(item, record_id, newIp, newIpv6) {
         try {
-            await fetch('/update-record', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    id: item.id,
-                    ip: newIp,
-                    ipv6: newIpv6
-                })
-            });
+            console.log(record_id, newIp, newIpv6)
+            await updateRecord(item.user_id, record_id, newIp, newIpv6);
         } catch (err) {
             console.error('Failed to update', err);
         }

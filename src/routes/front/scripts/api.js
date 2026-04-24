@@ -120,7 +120,6 @@ export async function activateAccount(token) {
 
 
 export async function deleteRecord(userId, recordId) {
-    const token = localStorage.getItem("token");
     const response = await fetch(`${API_BASE}/delete-user-record`, {
         method: 'POST',
         credentials: 'include',
@@ -133,6 +132,25 @@ export async function deleteRecord(userId, recordId) {
     const data = await response.json().catch(() => ({}));
     if (!response.ok) {
         throw new Error(data.error || 'Failed to delete record');
+    }
+    return data;
+}
+
+export async function updateRecord(userId, record_id, ipv4, ipv6) {
+    
+    console.log(record_id, ipv4, ipv6)
+    const response = await fetch(`${API_BASE}/edit-user-record`, {
+        method: 'PUT',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, record_id, ipv4, ipv6 })
+    });
+    const data = await response.json().catch(() => ({}));
+    
+    if (!response.ok) {
+        throw new Error(data.error || 'Failed to update record');
     }
     return data;
 }

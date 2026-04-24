@@ -1,6 +1,6 @@
 // router.js
 import { Home } from "./views/home.js";
-import { Collections } from "./views/collections.js";
+
 import { SignUp } from "./views/signup.js";
 import { SignIn } from "./views/signin.js";
 import { Dashboard } from "./views/dashboard.js";
@@ -10,7 +10,7 @@ import { mount } from "./mount.js";
 
 const routes = {
   "/": Home,
-  "/collections": Collections,
+
   "/signup": SignUp,
   "/signin": SignIn,
   "/dashboard": Dashboard,
